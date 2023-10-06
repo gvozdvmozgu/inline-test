@@ -2,5 +2,8 @@
 name = "inline-test"
 version = "0.1.0"
 edition = "2021"
+description = "The inline-test package extracts and processes inline test comments from Rust source files. It enables users to act on these specific comments, offering a lightweight method to integrate documentation or inline tests directly within the codebase."
+repository = "https://github.com/gvozdvmozgu/inline-test/"
+license = "MIT OR Apache-2.0"
 
 [dependencies]
