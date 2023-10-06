@@ -1,6 +1,3 @@
-use std::path::Path;
-use std::slice::SliceIndex;
-
 #[derive(Default, Debug)]
 struct Comment<'me> {
     contents: Vec<&'me str>,
@@ -9,11 +6,9 @@ struct Comment<'me> {
 impl<'me> Comment<'me> {
     fn of(source: &'me str) -> Vec<Comment<'me>> {
         let mut comments = Vec::new();
-
         let mut comment = Comment::default();
-        let lines = source.lines().map(str::trim_start);
 
-        for line in lines {
+        for line in source.lines().map(str::trim_start) {
             match line.strip_prefix("//") {
                 Some(contents) => {
                     let contents = contents.strip_prefix(' ').unwrap_or(contents);
@@ -40,7 +35,7 @@ impl<'me> Comment<'me> {
     }
 }
 
-impl<'me, I: SliceIndex<[&'me str]>> std::ops::Index<I> for Comment<'me> {
+impl<'me, I: std::slice::SliceIndex<[&'me str]>> std::ops::Index<I> for Comment<'me> {
     type Output = I::Output;
 
     fn index(&self, index: I) -> &Self::Output {
@@ -48,10 +43,10 @@ impl<'me, I: SliceIndex<[&'me str]>> std::ops::Index<I> for Comment<'me> {
     }
 }
 
-pub fn for_each(f: impl Fn(&str, &str)) {
+pub fn for_each(mut f: impl FnMut(&str, &str)) {
     let current_dir = std::env::current_dir().unwrap().join("src");
 
-    traverse(&current_dir, &|path| {
+    traverse(&current_dir, &mut |path| {
         let source = std::fs::read_to_string(path)
             .unwrap_or_else(|kind| panic!("reading `{}`: {kind}", path.display()));
 
@@ -67,7 +62,7 @@ pub fn for_each(f: impl Fn(&str, &str)) {
     .unwrap();
 }
 
-fn traverse(dir: &Path, cb: &dyn Fn(&Path)) -> std::io::Result<()> {
+fn traverse(dir: &std::path::Path, cb: &mut dyn FnMut(&std::path::Path)) -> std::io::Result<()> {
     if dir.is_dir() {
         for entry in std::fs::read_dir(dir)? {
             let path = entry?.path();
