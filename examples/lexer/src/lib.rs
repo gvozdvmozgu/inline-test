@@ -8,9 +8,7 @@ struct Cursor<'me> {
 
 impl<'me> Cursor<'me> {
     fn new(source: &'me str) -> Self {
-        Self {
-            chars: source.chars(),
-        }
+        Self { chars: source.chars() }
     }
 
     fn peek(&self) -> Option<char> {
@@ -67,10 +65,7 @@ fn test() {
 
     for file in files {
         let file = file.unwrap().path();
-        if file
-            .extension()
-            .is_some_and(|extension| extension == "expect")
-        {
+        if file.extension().is_some_and(|extension| extension == "expect") {
             continue;
         }
 

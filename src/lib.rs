@@ -1,3 +1,6 @@
+#![deny(unused_qualifications)]
+#![deny(clippy::semicolon_if_nothing_returned)]
+
 #[derive(Default, Debug)]
 struct Comment<'me> {
     contents: Vec<&'me str>,
@@ -12,7 +15,7 @@ impl<'me> Comment<'me> {
             match line.strip_prefix("//") {
                 Some(contents) => {
                     let contents = contents.strip_prefix(' ').unwrap_or(contents);
-                    comment.contents.push(contents);
+                    comment.push(contents);
                 }
                 None => {
                     if !comment.is_empty() {
@@ -32,6 +35,10 @@ impl<'me> Comment<'me> {
 
     fn is_empty(&self) -> bool {
         self.contents.is_empty()
+    }
+
+    fn push(&mut self, content: &'me str) {
+        self.contents.push(content);
     }
 }
 
@@ -56,7 +63,7 @@ pub fn for_each(mut f: impl FnMut(&str, &str)) {
             };
             let text = comment[1..].to_vec().join("\n");
 
-            f(name, &text)
+            f(name, &text);
         }
     })
     .unwrap();
