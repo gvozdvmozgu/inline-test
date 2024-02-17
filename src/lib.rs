@@ -2,12 +2,12 @@
 #![deny(clippy::semicolon_if_nothing_returned)]
 
 #[derive(Default, Debug)]
-struct Comment<'me> {
+pub struct Comment<'me> {
     contents: Vec<&'me str>,
 }
 
 impl<'me> Comment<'me> {
-    fn of(source: &'me str) -> Vec<Comment<'me>> {
+    pub fn of(source: &'me str) -> Vec<Comment<'me>> {
         let mut comments = Vec::new();
         let mut comment = Comment::default();
 
@@ -33,7 +33,11 @@ impl<'me> Comment<'me> {
         comments
     }
 
-    fn is_empty(&self) -> bool {
+    pub fn len(&self) -> usize {
+        self.contents.len()
+    }
+
+    pub fn is_empty(&self) -> bool {
         self.contents.is_empty()
     }
 
