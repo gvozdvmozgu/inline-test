@@ -1,6 +1,6 @@
 [package]
 name = "inline-test"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
 description = "Extract and process inline test comments from Rust source files."
 repository = "https://github.com/gvozdvmozgu/inline-test/"
