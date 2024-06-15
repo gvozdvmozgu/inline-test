@@ -62,7 +62,7 @@ pub fn for_each(mut f: impl FnMut(&str, &str)) {
             .unwrap_or_else(|kind| panic!("reading `{}`: {kind}", path.display()));
 
         for comment in Comment::of(&source) {
-            let Some(name) = &comment[0].strip_prefix("test ") else {
+            let Some(name) = comment[0].strip_prefix("test ") else {
                 continue;
             };
             let text = comment[1..].to_vec().join("\n");
